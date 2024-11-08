@@ -1,29 +1,30 @@
 # Load the data
 data <- read.csv("C:/Users/PC-Labcom-11/Downloads/supermarket sales.csv")
 
-# Total sales by branch
-sales_by_branch <- aggregate(data$Total, by = list(data$Branch), FUN = sum)
-colnames(sales_by_branch) <- c("Branch", "Total_Sales")
-print("Total Sales by Branch:")
-print(sales_by_branch)
+# Convert the Date column to Date format
+data$Date <- as.Date(data$Date, format = "%m/%d/%Y")
 
-# Total sales by product line
-sales_by_product_line <- aggregate(data$Total, by = list(data$Product.line), FUN = sum)
-colnames(sales_by_product_line) <- c("Product_line", "Total_Sales")
-print("Total Sales by Product Line:")
-print(sales_by_product_line)
+# Calculate the average rating by product line
+average_rating_product_line <- aggregate(data$Rating, by = list(data$Product.line), FUN = mean)
+colnames(average_rating_product_line) <- c("Product_Line", "Average_Rating")
+print("Average Rating by Product Line:")
+print(average_rating_product_line)
 
-# Total sales by customer type and gender
-sales_by_customer_gender <- aggregate(data$Total, by = list(data$Customer.type, data$Gender), FUN = sum)
-colnames(sales_by_customer_gender) <- c("Customer_Type", "Gender", "Total_Sales")
-print("Total Sales by Customer Type and Gender:")
-print(sales_by_customer_gender)
+# Calculate the average spending per transaction
+average_spend <- mean(data$Total)
+cat("\nAverage Spend per Transaction: ", round(average_spend, 2), "\n")
+
+# Calculate daily sales trend
+daily_sales_trend <- aggregate(data$Total, by = list(data$Date), FUN = sum)
+colnames(daily_sales_trend) <- c("Date", "Daily_Sales")
+print("Daily Sales Trend:")
+print(daily_sales_trend)
 
 # Display insights in the console
-cat("\n--- Summary ---\n")
-cat("\nTotal Sales by Branch:\n")
-print(sales_by_branch)
-cat("\nTotal Sales by Product Line:\n")
-print(sales_by_product_line)
-cat("\nTotal Sales by Customer Type and Gender:\n")
-print(sales_by_customer_gender)
+cat("\n--- Customer Behavior Summary ---\n")
+cat("\nAverage Rating by Product Line:\n")
+print(average_rating_product_line)
+cat("\nAverage Spend per Transaction:\n")
+print(round(average_spend, 2))
+cat("\nDaily Sales Trend:\n")
+print(daily_sales_trend)
